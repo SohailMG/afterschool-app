@@ -16,31 +16,125 @@
       integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
       crossorigin="anonymous"
     />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="lessons.js"></script>
     <title>After School</title>
+    <!--                 <i class="fas fa-plus-circle"></i>
+                <i class="fas fa-minus-circle"></i> -->
   </head>
   <body>
     <!-- root div -->
     <div id="app">
       <!-- main container -->
-      <main>
+      <main class="flex ">
         <!-- sidebar -->
-        <div id="sidebar">
+        <div id="sidebar" class="bg-gray-800 p-4 ">
+          <div class="flex flex-col items-center space-y-40">
+            <!-- Home icon -->
             <div>
-                
+              <i
+                class="
+                  fas
+                  fa-graduation-cap
+                  text-3xl text-orange-500
+                  cursor-pointer
+                "
+              ></i>
             </div>
+            <!-- Cart icon -->
+            <div>
+              <i
+                class="
+                  fas
+                  fa-shopping-cart
+                  text-2xl
+                  mt-20
+                  text-white
+                  cursor-pointer
+                "
+              ></i>
+            </div>
+          </div>
         </div>
         <!-- content -->
-        <div id="content">
-            <!-- header -->
-            <header>header</header>
-            <!--content section -->
-            <section>
-                <h1>Available Classes</h1>
-            </section>
+        <div id="content" class="bg-gray-200 w-screen">
+          <!-- header -->
+          <header class="p-2 flex items-center justify-center">
+            <div
+              class="
+                flex
+                items-center
+                space-x-2
+                bg-gray-100
+                p-2
+                mt-2
+                rounded-xl
+                w-64
+              "
+            >
+              <i class="fas fa-search text-orange-500"></i>
+              <input
+                type="text"
+                placeholder="search lessons"
+                class="bg-transparent outline-none"
+              />
+            </div>
+          </header>
+          <!--content section -->
+          <section class="p-4">
+            <h1 class="flex justify-center font-semibold text-gray-700">
+              Available Classes
+            </h1>
+            <!-- lessons container -->
+            <div class="flex items-center flex-wrap justify-center">
+              <!-- single lesson container -->
+              <div
+                v-for="lesson in lessons"
+                :key="lesson.id"
+                class="
+                  flex
+                  items-center
+                  space-x-4
+                  m-4
+                  p-2
+                  bg-gray-400
+                  rounded-md
+                "
+              >
+                <!-- image container -->
+                <div>
+                  <img
+                    :src="lesson.image"
+                    alt="maths"
+                    width="150"
+                    height="150"
+                  />
+                </div>
+                <!-- lesson details -->
+                <div class="flex flex-col w-32 space-y-2">
+                  <p class="flex items-center">
+                    <i class="fas fa-book-reader px-2"></i>{{lesson.subject}}
+                  </p>
+                  <p class="flex items-center">
+                    <i class="fas fa-map-marker-alt px-2 text-red-800"></i
+                    >{{lesson.location}}
+                  </p>
+                  <p class="flex items-center">
+                    <i class="fas fa-users px-2 text-green-600"></i>{{lesson.space}}
+                  </p>
+                  <p class="flex items-center px-2 text-xl text-green-800 font-semibold">
+                    <i class="fas fa-pound-sign"></i>{{lesson.price}}
+                  </p>
+                </div>
+                <i class="fas fa-plus-circle text-3xl text-gray-600 hover:text-gray-800 cursor-pointer"></i>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
 
     <!-- Vue app file -->
+    <script src="app.js"></script>
   </body>
 </html>

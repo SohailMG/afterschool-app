@@ -1,58 +1,82 @@
 const lessons = [
   {
-    id: 1,
+    id: 111,
     subject: "English",
-    location: "London",
+    location: "Hendon",
     price: 20.5,
     space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
+    image: "images/englishLogo.png",
   },
   {
-    id: 2,
+    id: 222,
     subject: "Maths",
-    location: "Hendon",
+    location: "Ealing",
     price: 15.5,
     space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
+    image: "images/mathsLogo.png",
   },
   {
-    id: 3,
+    id: 333,
     subject: "Science",
-    location: "London",
-    price: 10.0,
-    space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
-  },
-  {
-    id: 4,
-    subject: "Music",
     location: "Hendon",
     price: 10.0,
     space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
+    image: "images/scienceLogo.png",
   },
   {
-    id: 5,
+    id: 444,
+    subject: "Music",
+    location: "Hammersmith",
+    price: 10.0,
+    space: 5,
+    image: "images/musicLogo.png",
+  },
+  {
+    id: 555,
     subject: "Art",
-    location: "Hendon",
+    location: "Ealing",
     price: 10.0,
     space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
+    image: "images/artLogo.png",
   },
   {
-    id: 6,
-    subject: "Music",
+    id: 666,
+    subject: "Geography",
+    location: "Acton",
+    price: 10.0,
+    space: 5,
+    image: "images/geographyLogo.png",
+  },
+  {
+    id: 777,
+    subject: "History",
     location: "Hendon",
     price: 10.0,
     space: 5,
-    image:
-      "https://www.pinclipart.com/picdir/middle/197-1977094_vector-illustration-of-school-mathematics-study-in-math.png",
+    image: "images/historyLogo.png",
+  },
+  {
+    id: 888,
+    subject: "French",
+    location: "Hendon",
+    price: 10.0,
+    space: 5,
+    image: "images/frenchLogo.png",
+  },
+  {
+    id: 999,
+    subject: "IT",
+    location: "Stratford",
+    price: 10.0,
+    space: 5,
+    image: "images/computerLogo.png",
+  },
+  {
+    id: 100,
+    subject: "Spanish",
+    location: "Ealing",
+    price: 10.0,
+    space: 5,
+    image: "images/spanishLogo.png",
   },
 ];
-
-export default lessons;
