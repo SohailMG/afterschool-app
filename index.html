@@ -26,10 +26,10 @@
     <!-- root div -->
     <div id="app">
       <!-- main container -->
-      <main class="flex ">
+      <main class="flex">
         <!-- sidebar -->
-        <div id="sidebar" class="bg-gray-800 p-4 ">
-          <div class="flex flex-col items-center space-y-40">
+        <div id="sidebar" class="bg-gray-800 p-4">
+          <div class="flex flex-col items-center px-2 space-y-40 relative">
             <!-- Home icon -->
             <div>
               <i
@@ -53,6 +53,19 @@
                   cursor-pointer
                 "
               ></i>
+              <div
+                class="
+                  absolute
+                  bg-orange-400
+                  bottom-0
+                  right-0
+                  px-1
+                  text-md
+                  rounded-full
+                "
+              >
+                0
+              </div>
             </div>
           </div>
         </div>
@@ -99,6 +112,7 @@
                   p-2
                   bg-gray-400
                   rounded-md
+                  relative
                 "
               >
                 <!-- image container -->
@@ -120,13 +134,35 @@
                     >{{lesson.location}}
                   </p>
                   <p class="flex items-center">
-                    <i class="fas fa-users px-2 text-green-600"></i>{{lesson.space}}
+                    <i class="fas fa-users px-2 text-green-600"></i
+                    >{{lesson.space}}
                   </p>
-                  <p class="flex items-center px-2 text-xl text-green-800 font-semibold">
+                  <p
+                    class="
+                      flex
+                      items-center
+                      px-2
+                      text-xl text-green-800
+                      font-semibold
+                    "
+                  >
                     <i class="fas fa-pound-sign"></i>{{lesson.price}}
                   </p>
                 </div>
-                <i class="fas fa-plus-circle text-3xl text-gray-600 hover:text-gray-800 cursor-pointer"></i>
+                <i
+                  class="
+                    fas
+                    fa-plus-circle
+                    text-5xl text-gray-600
+                    hover:text-gray-800
+                    cursor-pointer
+                    absolute
+                    bottom-0
+                    right-0
+                    
+                  "
+                  @click="addToCart(lesson.id)"
+                ></i>
               </div>
             </div>
           </section>
