@@ -42,7 +42,15 @@
               ></i>
             </div>
             <!-- Cart icon -->
-            <div>
+            <div v-if="toggle">
+              <i class="fas fa-shopping-bag text-gray-200 text-2xl text-2xl
+                  mt-20
+                  text-white
+                  cursor-pointer
+                  hover:text-gray-500" @click="toggleCheckout"></i>
+            </div>
+            <div v-else-if="!toggle">
+              
               <i
                 class="
                   fas
@@ -51,9 +59,12 @@
                   mt-20
                   text-white
                   cursor-pointer
+                  hover:text-gray-500
                 "
+                @click="toggleCheckout"
               ></i>
               <div
+              v-show="cartCount > 0"
                 class="
                   absolute
                   bg-orange-400
@@ -64,7 +75,7 @@
                   rounded-full
                 "
               >
-                0
+                {{cartCount}}
               </div>
             </div>
           </div>
@@ -159,9 +170,8 @@
                     absolute
                     bottom-0
                     right-0
-                    
                   "
-                  @click="addToCart(lesson.id)"
+                  @click="addToCart(lesson)"
                 ></i>
               </div>
             </div>
