@@ -16,12 +16,16 @@
       integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
       crossorigin="anonymous"
     />
+    <!-- AnimateCss -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="lessons.js"></script>
     <title>After School</title>
-    <!--                 <i class="fas fa-plus-circle"></i>
-                <i class="fas fa-minus-circle"></i> -->
   </head>
+
   <body>
     <!-- root div -->
     <div id="app">
@@ -43,14 +47,21 @@
             </div>
             <!-- Cart icon -->
             <div v-if="toggle">
-              <i class="fas fa-shopping-bag text-gray-200 text-2xl text-2xl
+              <i
+                class="
+                  fas
+                  fa-shopping-bag
+                  text-gray-200 text-2xl text-2xl
                   mt-20
                   text-white
                   cursor-pointer
-                  hover:text-gray-500" @click="toggleCheckout"></i>
+                  hover:text-gray-500
+                "
+                @click="toggleCheckout"
+              ></i>
             </div>
+            <!-- Shopping icon -->
             <div v-else-if="!toggle">
-              
               <i
                 class="
                   fas
@@ -63,8 +74,9 @@
                 "
                 @click="toggleCheckout"
               ></i>
+              <!-- Cart Count div -->
               <div
-              v-show="cartCount > 0"
+                v-show="cartCount > 0"
                 class="
                   absolute
                   bg-orange-400
@@ -81,7 +93,10 @@
           </div>
         </div>
         <!-- content -->
-        <div id="content" class="bg-gray-200 w-screen">
+        <div
+          id="content"
+          class="bg-gray-200 w-screen min-h-screen flex flex-col justify-center"
+        >
           <!-- header -->
           <header class="p-2 flex items-center justify-center">
             <div
@@ -105,74 +120,157 @@
             </div>
           </header>
           <!--content section -->
-          <section class="p-4">
+          <!-- sort menu -->
+          <div
+            v-show="!toggle"
+            class="
+              relative
+              inline-flex
+              items-center
+              bg-orange-500
+              ml-10
+              w-56
+              rounded-md
+            "
+          >
+            <svg
+              class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 412 232"
+            >
+              <path
+                d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+                fill="#648299"
+                fill-rule="nonzero"
+              />
+            </svg>
+            <p class="px-2 text-white">Sort by</p>
+            <select
+              v-model="sortOption"
+              class="
+                text-gray-200
+                h-10
+                pl-5
+                pr-10
+                bg-transparent
+                hover:border-gray-400
+                outline-none
+                appearance-none
+              "
+            >
+              <option v-for="option in options">{{option}}</option>
+            </select>
+          </div>
+          <section
+            class="p-4 bg-white mt-10 rounded-tr-3xl rounded-tl-3xl shadow-lg"
+          >
             <h1 class="flex justify-center font-semibold text-gray-700">
-              Available Classes
+              {{toggle? "Your basket" : "Available lessons"}}
             </h1>
             <!-- lessons container -->
-            <div class="flex items-center flex-wrap justify-center">
+            <div
+              v-if="!toggle"
+              class="flex items-center space-y-4 flex-wrap justify-center"
+            >
               <!-- single lesson container -->
               <div
                 v-for="lesson in lessons"
                 :key="lesson.id"
                 class="
-                  flex
-                  items-center
-                  space-x-4
-                  m-4
-                  p-2
-                  bg-gray-400
-                  rounded-md
-                  relative
+                  animate__animated animate__zoomIn
+                  container
+                  mx-auto
+                  p-16
+                  bg-white
+                  max-w-sm
+                  rounded-2xl
+                  overflow-hidden
+                  shadow-xl
+                  hover:shadow-2xl
+                  transition
+                  duration-300
                 "
               >
-                <!-- image container -->
-                <div>
-                  <img
-                    :src="lesson.image"
-                    alt="maths"
-                    width="150"
-                    height="150"
-                  />
+                <img class="rounded-xl" :src="lesson.image" alt="" />
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h1 class="mt-5 text-2xl font-semibold">
+                      {{lesson.subject}}
+                    </h1>
+                    <small class="text-sm text-gray-400">
+                      <i class="fa fa-map-marker-alt"></i>
+                      {{lesson.location}}</small
+                    >
+                    <p class="mt-2 font-semibold text-green-700 text-xl">
+                      £{{lesson.price}}/h
+                    </p>
+                    <p class="mt-2 font-semibold text-xl">
+                      <i
+                        :class="{'fa fa-users text-green-700 px-2':lesson.space > 0 ,'fa fa-users text-red-700 px-2':lesson.space == 0}"
+                      ></i
+                      >{{lesson.space === 0 ? 'Currently Full' : lesson.space}}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      :disabled="lesson.space === 0"
+                      :class="getBtnClasses(lesson)
+                      "
+                      @click="addToCart(lesson)"
+                    >
+                      Add
+                      <i
+                        class="
+                          fas
+                          fa-cart-plus
+                          text-gray-200 text-md text-white
+                        "
+                      ></i>
+                    </button>
+                  </div>
                 </div>
-                <!-- lesson details -->
-                <div class="flex flex-col w-32 space-y-2">
-                  <p class="flex items-center">
-                    <i class="fas fa-book-reader px-2"></i>{{lesson.subject}}
-                  </p>
-                  <p class="flex items-center">
-                    <i class="fas fa-map-marker-alt px-2 text-red-800"></i
-                    >{{lesson.location}}
-                  </p>
-                  <p class="flex items-center">
-                    <i class="fas fa-users px-2 text-green-600"></i
-                    >{{lesson.space}}
-                  </p>
-                  <p
+              </div>
+            </div>
+            <!-- Cart container -->
+            <div v-else-if="toggle">
+              <div>
+                <!-- order summary -->
+                <div class="flex flex-col w-1/2">
+                  <!-- single order container -->
+                  <h1 class="font-semibold text-gray-800">Order Summary</h1>
+                  <div
+                    v-for="order in basketItems"
                     class="
                       flex
                       items-center
-                      px-2
-                      text-xl text-green-800
-                      font-semibold
+                      space-x-10
+                      justify-between
+                      border-b-2 border-gray-300
                     "
                   >
-                    <i class="fas fa-pound-sign"></i>{{lesson.price}}
-                  </p>
+                    <img :src="order.lesson.image" alt="art" />
+                    <div>
+                      <p>{{order.lesson.subject}}</p>
+                      <p>£{{order.lesson.price}}</p>
+                    </div>
+                    <span class="text-md text-gray-500"
+                      >x{{order.quantity}}</span
+                    >
+                    <!-- remove from basket -->
+                    <i
+                      class="
+                        fa fa-trash
+                        text-gray-500
+                        hover:text-red-800
+                        cursor-pointer
+                      "
+                      @click="removeFromBasket(order)"
+                    ></i>
+                  </div>
+                  <h1>Total £340</h1>
                 </div>
-                <i
-                  class="
-                    fas
-                    fa-plus-circle
-                    text-5xl text-gray-600
-                    hover:text-gray-800
-                    cursor-pointer
-                    absolute
-                    bottom-0
-                    right-0
-                  "
-                  @click="addToCart(lesson)"
-                ></i>
+                <!-- checkout form -->
+                <div></div>
               </div>
             </div>
           </section>
