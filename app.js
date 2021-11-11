@@ -10,32 +10,24 @@ new Vue({
   },
   methods: {
     addToCart(lesson) {
-      this.cart.push(lesson.id);
+       const index = this.cart.findIndex(
+         (item) => item.lesson.id === lesson.id
+       );
+      if(index >= 0) {
+        this.cart[index].quantity +=1;
+      }else{
+        const cartItem = {
+          lesson: lesson,
+          quantity:1
+        }
+        this.cart.push(cartItem);
+      }
       this.lessons.map((lsn) => (lsn.id == lesson.id ? (lsn.space -= 1) : 5));
     },
     toggleCheckout() {
       this.toggle = !this.toggle;
-      if (this.toggle) {
-        this.countOccurrences();
-      }
     },
-    countOccurrences() {
-      let counts = {};
-      for (const num of this.cart) {
-        counts[num] = counts[num] ? counts[num] + 1 : 1;
-      }
-      Object.keys(counts).forEach((num) => {
-        this.lessons.map((lesson) => {
-          if (lesson.id == num) {
-            const order = {
-              lesson: lesson,
-              quantity: counts[num],
-            };
-            this.basketItems.push(order);
-          }
-        });
-      });
-    },
+
     getBtnClasses(lesson) {
       return {
         "text-white text-md": true,
@@ -55,16 +47,23 @@ new Vue({
       };
     },
     removeFromBasket(order) {
-      const {quantity,lesson} = order;
       order.quantity -= 1;
       if(order.quantity == 0) {
-        this.basketItems = this.basketItems.filter((item) => item.lesson.id != order.lesson.id)
+        this.cart = this.cart.filter((item) => item.lesson.id != order.lesson.id)
       }
+      const currentLesson = this.lessons.filter((lesson) => lesson.id == order.lesson.id);
+      currentLesson[0].space+=1;
     }
   },
   computed: {
     cartCount() {
       return this.cart.length;
     },
+    orderTotal(){
+      if(this.cart.length == 0) return;
+      return this.cart
+        .map((order) => (order.lesson.price * order.quantity))
+        .reduce((prev, next) => prev + next);
+    }
   },
 });

@@ -162,7 +162,7 @@
             </select>
           </div>
           <section
-            class="p-4 bg-white mt-10 rounded-tr-3xl rounded-tl-3xl shadow-lg"
+            class="p-4 bg-white mt-10 rounded-tr-3xl rounded-tl-3xl shadow-lg min-h-screen"
           >
             <h1 class="flex justify-center font-semibold text-gray-700">
               {{toggle? "Your basket" : "Available lessons"}}
@@ -202,7 +202,7 @@
                       {{lesson.location}}</small
                     >
                     <p class="mt-2 font-semibold text-green-700 text-xl">
-                      £{{lesson.price}}/h
+                      £{{lesson.price}}
                     </p>
                     <p class="mt-2 font-semibold text-xl">
                       <i
@@ -235,23 +235,27 @@
             <div v-else-if="toggle">
               <div>
                 <!-- order summary -->
-                <div class="flex flex-col w-1/2">
+                <div v-show="cart.length > 0" class="flex flex-col w-1/2 space-y-4">
                   <!-- single order container -->
-                  <h1 class="font-semibold text-gray-800">Order Summary</h1>
+                  <h1 class="font-semibold text-gray-800 mx-auto">Order Summary</h1>
                   <div
-                    v-for="order in basketItems"
+                    v-for="order in cart"
                     class="
                       flex
                       items-center
                       space-x-10
                       justify-between
                       border-b-2 border-gray-300
+                      shadow-xl
+                      hover:shadow-2xl
+                      p-2
+                      animate__animated animate__zoomIn
                     "
                   >
                     <img :src="order.lesson.image" alt="art" />
                     <div>
-                      <p>{{order.lesson.subject}}</p>
-                      <p>£{{order.lesson.price}}</p>
+                      <p class="text-md font-semibold text-gray-500">{{order.lesson.subject}}</p>
+                      <p class="text-md font-semibold text-gray-800">£{{order.lesson.price * order.quantity}}</p>
                     </div>
                     <span class="text-md text-gray-500"
                       >x{{order.quantity}}</span
@@ -267,10 +271,12 @@
                       @click="removeFromBasket(order)"
                     ></i>
                   </div>
-                  <h1>Total £340</h1>
+                  <h1 class="text-md font-semibold mx-auto py-4">Total £{{orderTotal}}</h1>
                 </div>
                 <!-- checkout form -->
-                <div></div>
+                <div>
+                  
+                </div>
               </div>
             </div>
           </section>
