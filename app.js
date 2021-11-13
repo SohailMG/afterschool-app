@@ -7,11 +7,13 @@ new Vue({
     sortOption: "",
     options: ["Price-asc", "Price-dec", "Space-asc", "Space-dec"],
     basketItems: [],
+    checkoutClicked: false,
     form: {
       fullname: "",
       mobile: null,
       isValid: false,
     },
+    orderComplete: false,
     searchInput: "",
   },
   methods: {
@@ -31,14 +33,13 @@ new Vue({
     // switch between checkout and lessons
     toggleCheckout() {
       this.toggle = !this.toggle;
+      this.orderComplete = false;
     },
     // validates input forms
     validateForm() {
-      const isnum = /^\d+$/.test(this.form.mobile);
-      const isLetters = /^[^a-zA-Z]*$/.test(this.form.fullname);
-      return isnum && isLetters
-        ? (this.form.isValid = true)
-        : this.form.isValid;
+      const isNumOnly = /^\d+$/.test(this.form.mobile);
+      const isLettersOnly = /^[a-zA-Z]+$/.test(this.form.fullname);
+      this.form.isValid = isNumOnly && isLettersOnly ? true : false;
     },
     // sort lessons
     sortBy() {
@@ -55,7 +56,6 @@ new Vue({
         case "Space-dec":
           this.lessons.sort((a, b) => b.space - a.space);
           break;
-
         default:
           break;
       }
@@ -78,6 +78,15 @@ new Vue({
         "transform-gpu": true,
         "hover:bg-gray-800": lesson.space > 0,
       };
+    },
+    //checkout btn
+    checkout() {
+      this.checkoutClicked = true;
+      setTimeout(() => {
+        this.checkoutClicked = false;
+        this.orderComplete = true;
+        this.cart = [];
+      }, 2000);
     },
     // removes item from basket
     removeFromBasket(order) {
