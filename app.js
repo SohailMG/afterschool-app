@@ -4,8 +4,14 @@ new Vue({
     lessons: lessons,
     cart: [],
     toggle: false,
-    sortOption: "",
-    options: ["Price-asc", "Price-dec", "Space-asc", "Space-dec"],
+    sortOption: "Price",
+    options: [
+      "Price",
+      "Space",
+      "Subject",
+      "Location",
+    ],
+    sortOrder:"Ascending",
     basketItems: [],
     checkoutClicked: false,
     form: {
@@ -34,7 +40,9 @@ new Vue({
     toggleCheckout() {
       this.toggle = !this.toggle;
       this.orderComplete = false;
+      
     },
+
     // validates input forms
     validateForm() {
       const isNumOnly = /^\d+$/.test(this.form.mobile);
@@ -44,21 +52,56 @@ new Vue({
     // sort lessons
     sortBy() {
       switch (this.sortOption) {
-        case "Price-asc":
-          this.lessons.sort((a, b) => a.price - b.price);
+        case "Price":
+          this.lessons.sort((a, b) =>
+            this.sortOrder == "Ascending"
+              ? a.price - b.price
+              : b.price - a.price
+          );
           break;
-        case "Price-dec":
-          this.lessons.sort((a, b) => b.price - a.price);
+        case "Space":
+          this.lessons.sort((a, b) =>
+            this.sortOrder == "Ascending"
+              ? a.space - b.space
+              : b.space - a.space
+          );
           break;
-        case "Space-asc":
-          this.lessons.sort((a, b) => a.space - b.space);
+        case "Subject":
+          this.sortOrder == "Ascending"
+            ? this.lessons.sort((a, b) =>
+                a.subject.toLowerCase().localeCompare(b.subject.toLowerCase())
+              )
+            : this.lessons.sort(function (a, b) {
+                if (a.subject < b.subject) {
+                  return 1;
+                }
+                if (a.subject > b.subject) {
+                  return -1;
+                }
+                return 0;
+              });
           break;
-        case "Space-dec":
-          this.lessons.sort((a, b) => b.space - a.space);
+        case "Location":
+          this.sortOrder == "Ascending"
+            ? this.lessons.sort((a, b) =>
+                a.location.toLowerCase().localeCompare(b.location.toLowerCase())
+              )
+            : this.lessons.sort(function (a, b) {
+                if (a.location < b.location) {
+                  return 1;
+                }
+                if (a.location > b.location) {
+                  return -1;
+                }
+                return 0;
+              });
           break;
+
         default:
           break;
       }
+
+      
     },
     // class names for add button
     getBtnClasses(lesson) {
@@ -85,6 +128,8 @@ new Vue({
       setTimeout(() => {
         this.checkoutClicked = false;
         this.orderComplete = true;
+        this.form.fullname = "";
+        this.form.mobile = null;
         this.cart = [];
       }, 2000);
     },
