@@ -34,7 +34,7 @@ const lessons = [
   {
     id: 555,
     subject: "Art",
-    location: "Ealing",
+    location: "Oldham",
     price: 45.0,
     space: 5,
     image: "images/artLogo.png",
@@ -50,7 +50,7 @@ const lessons = [
   {
     id: 777,
     subject: "History",
-    location: "Hendon",
+    location: "Putney",
     price: 10.0,
     space: 5,
     image: "images/historyLogo.png",

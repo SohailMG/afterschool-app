@@ -4,7 +4,7 @@ new Vue({
     lessons: lessons,
     cart: [],
     toggle: false,
-    sortOption: "Price",
+    sortOption: "",
     options: [
       "Price",
       "Space",
@@ -23,17 +23,23 @@ new Vue({
     searchInput: "",
   },
   methods: {
+    // adds lesson object to cart 
     addToCart(lesson) {
+      // getting index if item exists in cart
       const index = this.cart.findIndex((item) => item.lesson.id === lesson.id);
+
+      // increment quantity of item if it already exists
       if (index >= 0) {
         this.cart[index].quantity += 1;
       } else {
+        // creating new cart object with quantity
         const cartItem = {
           lesson: lesson,
           quantity: 1,
         };
         this.cart.push(cartItem);
       }
+      // decreasing spaces by one
       this.lessons.map((lsn) => (lsn.id == lesson.id ? (lsn.space -= 1) : 5));
     },
     // switch between checkout and lessons
@@ -49,7 +55,7 @@ new Vue({
       const isLettersOnly = /^[a-zA-Z]+$/.test(this.form.fullname);
       this.form.isValid = isNumOnly && isLettersOnly ? true : false;
     },
-    // sort lessons
+    // checks search options and sorts lessons according to the order
     sortBy() {
       switch (this.sortOption) {
         case "Price":
@@ -103,7 +109,7 @@ new Vue({
 
       
     },
-    // class names for add button
+    // dynamic class names for add button
     getBtnClasses(lesson) {
       return {
         "text-white text-md": true,
@@ -131,16 +137,18 @@ new Vue({
         this.form.fullname = "";
         this.form.mobile = null;
         this.cart = [];
-      }, 2000);
+      }, 1000);
     },
     // removes item from basket
     removeFromBasket(order) {
       order.quantity -= 1;
+      // removing item from cart
       if (order.quantity == 0) {
         this.cart = this.cart.filter(
           (item) => item.lesson.id != order.lesson.id
-        );
+        );  
       }
+      // adding back space to removed item
       const currentLesson = this.lessons.filter(
         (lesson) => lesson.id == order.lesson.id
       );
@@ -151,19 +159,28 @@ new Vue({
     cartCount() {
       return this.cart.length;
     },
+    // computes the total of orders
     orderTotal() {
       if (this.cart.length == 0) return;
       return this.cart
         .map((order) => order.lesson.price * order.quantity)
         .reduce((prev, next) => prev + next);
     },
-    // search function
+    //Filters lessons array where search input matches either 
+    //location or subject
     searchResults() {
       return this.lessons.filter((lesson) => {
-        return (lesson.subject || lesson.location)
+        return (
+          lesson.subject
+            .toLowerCase()
+            .includes(this.searchInput.toLowerCase()) 
+            ||
+          lesson.location
           .toLowerCase()
-          .includes(this.searchInput.toLowerCase());
+          .includes(this.searchInput.toLowerCase())
+        );
       });
+      
     },
   },
 });
