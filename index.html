@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="index.css" />
-    <!-- Tailwindcss -->
+    <!-- TailindCss -->
     <link
       href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <!-- Fontawesome -->
+    <!-- FontAwesome -->
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
@@ -22,7 +22,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <!-- vue package -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- lessons dataset -->
     <script src="lessons.js"></script>
     <title>After School</title>
   </head>
@@ -46,7 +48,7 @@
                 "
               ></i>
             </div>
-            <!-- Cart icon -->
+            <!-- store icon -->
             <div v-if="toggle">
               <i
                 class="
@@ -63,7 +65,7 @@
                 ><small class="text-sm px-2">Store</small></i
               >
             </div>
-            <!-- Shopping icon -->
+            <!-- Shopping cart icon -->
             <div v-else-if="!toggle">
               <i
                 v-show="cart.length > 0"
@@ -105,6 +107,7 @@
         >
           <!-- header -->
           <header class="p-2 flex items-center justify-center">
+            <!-- search bar container -->
             <div
               class="
                 flex
@@ -191,6 +194,7 @@
             </div>
             <!-- Asc and Dec options -->
           </div>
+          <!-- END OF SORT menu -->
 
           <section
             class="
@@ -231,16 +235,16 @@
                 ></path>
               </svg>
               <div>
-                <span class="font-medium">Thank you! {{form.fullname}}</span> Your order has been
+                <span class="font-medium">Thank you! <b>{{form.fullname}}</b></span> Your order has been
                 completed.
               </div>
             </div>
-            <!-- lessons container -->
+            <!-- LESSONS CONTAINER -->
             <div
               v-if="!toggle"
               class="flex items-center space-y-4 flex-wrap justify-center"
             >
-              <!-- single lesson container -->
+              <!-- SINGLE LESSON CONTAINER -->
               <div
                 v-for="lesson in searchResults"
                 :key="lesson.id"
@@ -248,7 +252,7 @@
                   animate__animated animate__zoomIn
                   container
                   mx-auto
-                  p-16
+                  p-10
                   bg-white
                   max-w-sm
                   rounded-2xl
@@ -260,8 +264,8 @@
                 "
               >
                 <img class="rounded-xl" :src="lesson.image" alt="" />
-                <div class="flex justify-between items-center">
-                  <div>
+                <div class="flex  items-center">
+                  <div class="flex items-start flex-col">
                     <h1 class="mt-5 text-2xl font-semibold">
                       {{lesson.subject}}
                     </h1>
@@ -276,7 +280,7 @@
                       <i
                         :class="{'fa fa-users text-green-700 px-2':lesson.space > 0 ,'fa fa-users text-red-700 px-2':lesson.space == 0}"
                       ></i
-                      >{{lesson.space === 0 ? 'Currently Full' : lesson.space}}
+                      >{{lesson.space === 0 ? 'No spaces left' : lesson.space}}
                     </p>
                   </div>
                   <div>
@@ -298,13 +302,14 @@
                   </div>
                 </div>
               </div>
+              <!-- END OF SINGLE LESSON CONTAINER -->
             </div>
-            <!-- Cart container -->
+            <!-- CART CONTAINER -->
             <div v-else-if="toggle" v-show="cart.length > 0">
+              <!-- ORDER SUMMARY-->
               <div class="flex justify-evenly space-x-2">
-                <!-- order summary -->
+                <!-- SINGLE ORDER CONTAINER -->
                 <div class="flex flex-col w-1/2 space-y-4">
-                  <!-- single order container -->
                   <h1 class="font-semibold text-gray-800 mx-auto">
                     Order Summary
                   </h1>
@@ -367,6 +372,7 @@
                   <h1 class="text-md font-semibold mx-auto py-4">
                     Total £{{orderTotal}}
                   </h1>
+                  <!-- Checkout button -->
                   <button
                     v-if="!checkoutClicked"
                     :class="

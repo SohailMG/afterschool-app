@@ -26,7 +26,7 @@ new Vue({
     // adds lesson object to cart 
     addToCart(lesson) {
       // getting index if item exists in cart
-      const index = this.cart.findIndex((item) => item.lesson.id === lesson.id);
+      const index = this.cart.findIndex((cartItem) => cartItem.lesson.id === lesson.id);
 
       // increment quantity of item if it already exists
       if (index >= 0) {
@@ -46,18 +46,22 @@ new Vue({
     toggleCheckout() {
       this.toggle = !this.toggle;
       this.orderComplete = false;
+      // reset form fields
+      this.form.fullname = "";
+      this.form.mobile = null;
       
     },
 
     // validates input forms
     validateForm() {
       const isNumOnly = /^\d+$/.test(this.form.mobile);
-      const isLettersOnly = /^[a-zA-Z]+$/.test(this.form.fullname);
+      const isLettersOnly = /^[a-zA-Z\s]+$/.test(this.form.fullname);
       this.form.isValid = isNumOnly && isLettersOnly ? true : false;
     },
     // checks search options and sorts lessons according to the order
     sortBy() {
       switch (this.sortOption) {
+        // sort by price Ascending or descending
         case "Price":
           this.lessons.sort((a, b) =>
             this.sortOrder == "Ascending"
@@ -65,6 +69,7 @@ new Vue({
               : b.price - a.price
           );
           break;
+        // sort by space available in  Ascending or descending
         case "Space":
           this.lessons.sort((a, b) =>
             this.sortOrder == "Ascending"
@@ -72,6 +77,7 @@ new Vue({
               : b.space - a.space
           );
           break;
+        // sort by subject a-z or z-a
         case "Subject":
           this.sortOrder == "Ascending"
             ? this.lessons.sort((a, b) =>
@@ -87,6 +93,7 @@ new Vue({
                 return 0;
               });
           break;
+        // sort by location a-z or z-a
         case "Location":
           this.sortOrder == "Ascending"
             ? this.lessons.sort((a, b) =>
@@ -113,6 +120,7 @@ new Vue({
     getBtnClasses(lesson) {
       return {
         "text-white text-md": true,
+        "absolute bottom-0 right-0 m-2":true,
         "font-semibold": true,
         "bg-orange-400": lesson.space > 0,
         "bg-gray-500": lesson.space == 0,
@@ -134,8 +142,6 @@ new Vue({
       setTimeout(() => {
         this.checkoutClicked = false;
         this.orderComplete = true;
-        this.form.fullname = "";
-        this.form.mobile = null;
         this.cart = [];
       }, 1000);
     },
