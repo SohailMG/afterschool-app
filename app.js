@@ -49,6 +49,7 @@ new Vue({
       // reset form fields
       this.form.fullname = "";
       this.form.mobile = null;
+      this.form.isValid = false;
       
     },
 
