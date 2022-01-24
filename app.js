@@ -46,7 +46,7 @@ new Vue({
         this.cart.push(cartItem);
       }
       // decreasing spaces by one
-      this.lessons.map((lsn) => (lsn._id == lesson._id ? (lsn.space -= 1) : 5));
+      // this.lessons.map((lsn) => (lsn._id == lesson._id ? (lsn.space -= 1) : 5));
     },
     // switch between checkout and lessons
     toggleCheckout() {
@@ -148,6 +148,7 @@ new Vue({
           lesson: { _id, space, subject },
           quantity,
         } = order;
+        console.log(space, quantity);
         fetch("http://localhost:3000/collection/orders", {
           method: "POST",
           headers: {
@@ -167,6 +168,19 @@ new Vue({
             this.checkoutClicked = false;
             this.orderComplete = true;
             this.cart = [];
+          });
+
+        fetch(`http://localhost:3000/collection/lessons/${_id}`, {
+          method: "PUT",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ spaces: space - quantity }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
           });
       });
     },
