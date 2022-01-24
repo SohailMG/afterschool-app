@@ -18,6 +18,7 @@ new Vue({
     searchInput: "",
   },
   created() {
+    console.log("created");
     this.fetchLessonsFromDb();
   },
   methods: {
@@ -30,7 +31,7 @@ new Vue({
     addToCart(lesson) {
       // getting index if item exists in cart
       const index = this.cart.findIndex(
-        (cartItem) => cartItem.lesson.id === lesson.id
+        (cartItem) => cartItem.lesson._id === lesson._id
       );
 
       // increment quantity of item if it already exists
@@ -45,7 +46,7 @@ new Vue({
         this.cart.push(cartItem);
       }
       // decreasing spaces by one
-      this.lessons.map((lsn) => (lsn.id == lesson.id ? (lsn.space -= 1) : 5));
+      this.lessons.map((lsn) => (lsn._id == lesson._id ? (lsn.space -= 1) : 5));
     },
     // switch between checkout and lessons
     toggleCheckout() {
@@ -142,11 +143,32 @@ new Vue({
     //checkout btn
     checkout() {
       this.checkoutClicked = true;
-      setTimeout(() => {
-        this.checkoutClicked = false;
-        this.orderComplete = true;
-        this.cart = [];
-      }, 1000);
+      this.cart.forEach((order) => {
+        const {
+          lesson: { _id, space, subject },
+          quantity,
+        } = order;
+        fetch("http://localhost:3000/collection/orders", {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            lessonId: _id,
+            space: quantity,
+            subject,
+            phone: this.form.mobile,
+            name: this.form.fullname,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            this.checkoutClicked = false;
+            this.orderComplete = true;
+            this.cart = [];
+          });
+      });
     },
     // removes item from basket
     removeFromBasket(order) {
@@ -154,12 +176,12 @@ new Vue({
       // removing item from cart
       if (order.quantity == 0) {
         this.cart = this.cart.filter(
-          (item) => item.lesson.id != order.lesson.id
+          (item) => item.lesson._id != order.lesson._id
         );
       }
       // adding back space to removed item
       const currentLesson = this.lessons.filter(
-        (lesson) => lesson.id == order.lesson.id
+        (lesson) => lesson._id == order.lesson._id
       );
       currentLesson[0].space += 1;
     },
