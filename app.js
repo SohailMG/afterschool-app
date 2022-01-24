@@ -1,17 +1,12 @@
 new Vue({
   el: "#app",
   data: {
-    lessons: lessons,
+    lessons: null,
     cart: [],
     toggle: false,
     sortOption: "",
-    options: [
-      "Price",
-      "Space",
-      "Subject",
-      "Location",
-    ],
-    sortOrder:"Ascending",
+    options: ["Price", "Space", "Subject", "Location"],
+    sortOrder: "Ascending",
     basketItems: [],
     checkoutClicked: false,
     form: {
@@ -22,11 +17,21 @@ new Vue({
     orderComplete: false,
     searchInput: "",
   },
+  created() {
+    this.fetchLessonsFromDb();
+  },
   methods: {
-    // adds lesson object to cart 
+    fetchLessonsFromDb() {
+      fetch("http://localhost:3000/collection/lessons")
+        .then((response) => response.json())
+        .then((data) => (this.lessons = data));
+    },
+    // adds lesson object to cart
     addToCart(lesson) {
       // getting index if item exists in cart
-      const index = this.cart.findIndex((cartItem) => cartItem.lesson.id === lesson.id);
+      const index = this.cart.findIndex(
+        (cartItem) => cartItem.lesson.id === lesson.id
+      );
 
       // increment quantity of item if it already exists
       if (index >= 0) {
@@ -50,7 +55,6 @@ new Vue({
       this.form.fullname = "";
       this.form.mobile = null;
       this.form.isValid = false;
-      
     },
 
     // validates input forms
@@ -114,14 +118,12 @@ new Vue({
         default:
           break;
       }
-
-      
     },
     // dynamic class names for add button
     getBtnClasses(lesson) {
       return {
         "text-white text-md": true,
-        "absolute bottom-0 right-0 m-2":true,
+        "absolute bottom-0 right-0 m-2": true,
         "font-semibold": true,
         "bg-orange-400": lesson.space > 0,
         "bg-gray-500": lesson.space == 0,
@@ -153,7 +155,7 @@ new Vue({
       if (order.quantity == 0) {
         this.cart = this.cart.filter(
           (item) => item.lesson.id != order.lesson.id
-        );  
+        );
       }
       // adding back space to removed item
       const currentLesson = this.lessons.filter(
@@ -173,21 +175,21 @@ new Vue({
         .map((order) => order.lesson.price * order.quantity)
         .reduce((prev, next) => prev + next);
     },
-    //Filters lessons array where search input matches either 
+    //Filters lessons array where search input matches either
     //location or subject
     searchResults() {
-      return this.lessons.filter((lesson) => {
-        return (
-          lesson.subject
-            .toLowerCase()
-            .includes(this.searchInput.toLowerCase()) 
-            ||
-          lesson.location
-          .toLowerCase()
-          .includes(this.searchInput.toLowerCase())
-        );
-      });
-      
+      if (this.lessons) {
+        return this.lessons.filter((lesson) => {
+          return (
+            lesson.subject
+              .toLowerCase()
+              .includes(this.searchInput.toLowerCase()) ||
+            lesson.location
+              .toLowerCase()
+              .includes(this.searchInput.toLowerCase())
+          );
+        });
+      }
     },
   },
 });

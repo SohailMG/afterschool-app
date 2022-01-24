@@ -24,9 +24,8 @@
     />
     <!-- vue package -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    
+
     <!-- lessons dataset -->
-    <script src="lessons.js"></script>
     <title>After School</title>
   </head>
 
@@ -41,27 +40,13 @@
             <!-- Home icon -->
             <div>
               <i
-                class="
-                  fas
-                  fa-graduation-cap
-                  text-3xl text-orange-500
-                  cursor-pointer
-                "
+                class="fas fa-graduation-cap text-3xl text-orange-500 cursor-pointer"
               ></i>
             </div>
             <!-- store icon -->
             <div v-if="toggle">
               <i
-                class="
-                  fas
-                  fa-shopping-bag
-                  text-gray-200 text-2xl text-2xl
-                  mt-20
-                  text-white
-                  cursor-pointer
-                  hover:text-gray-500
-                  text-xs
-                "
+                class="fas fa-shopping-bag text-gray-200 text-2xl text-2xl mt-20 text-white cursor-pointer hover:text-gray-500 text-xs"
                 @click="toggleCheckout"
                 ><small class="text-sm px-2">Store</small></i
               >
@@ -70,31 +55,13 @@
             <div v-else-if="!toggle">
               <i
                 v-show="cart.length > 0"
-                class="
-                  fas
-                  fa-shopping-cart
-                  text-2xl
-                  mt-20
-                  text-white
-                  cursor-pointer
-                  hover:text-gray-500
-                  flex flex-col
-                "
+                class="fas fa-shopping-cart text-2xl mt-20 text-white cursor-pointer hover:text-gray-500 flex flex-col"
                 @click="toggleCheckout"
-                ></i
-              >
+              ></i>
               <!-- Cart Count div -->
               <div
                 v-show="cartCount > 0"
-                class="
-                  absolute
-                  bg-orange-400
-                  bottom-0
-                  right-0
-                  px-1
-                  text-md
-                  rounded-full
-                "
+                class="absolute bg-orange-400 bottom-0 right-0 px-1 text-md rounded-full"
               >
                 {{cartCount}}
               </div>
@@ -110,16 +77,7 @@
           <header class="p-2 flex items-center justify-center">
             <!-- search bar container -->
             <div
-              class="
-                flex
-                items-center
-                space-x-2
-                bg-gray-100
-                p-2
-                mt-2
-                rounded-xl
-                w-64
-              "
+              class="flex items-center space-x-2 bg-gray-100 p-2 mt-2 rounded-xl w-64"
             >
               <i class="fas fa-search text-orange-500"></i>
               <input
@@ -134,15 +92,7 @@
           <!-- sort menu -->
           <div class="flex items-center space-x-6" v-show="!toggle">
             <div
-              class="
-                relative
-                inline-flex
-                items-center
-                bg-orange-500
-                ml-10
-                w-56
-                rounded-md
-              "
+              class="relative inline-flex items-center bg-orange-500 ml-10 w-56 rounded-md"
             >
               <svg
                 class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
@@ -159,16 +109,7 @@
               <select
                 @change="sortBy"
                 v-model="sortOption"
-                class="
-                  text-gray-200
-                  h-10
-                  pl-5
-                  pr-10
-                  bg-transparent
-                  hover:border-gray-400
-                  outline-none
-                  appearance-none
-                "
+                class="text-gray-200 h-10 pl-5 pr-10 bg-transparent hover:border-gray-400 outline-none appearance-none"
               >
                 <option v-for="option in options">{{option}}</option>
               </select>
@@ -184,12 +125,12 @@
               />
               <label for="Asc">Ascending</label><br />
               <input
-              type="radio"
-              id="Dec"
-              value="Descending"
-              name="sortOrder"
-              v-model="sortOrder"
-              @change="sortBy"
+                type="radio"
+                id="Dec"
+                value="Descending"
+                name="sortOrder"
+                v-model="sortOrder"
+                @change="sortBy"
               />
               <label for="Dec">Descending</label><br />
             </div>
@@ -198,14 +139,7 @@
           <!-- END OF SORT menu -->
 
           <section
-            class="
-              p-4
-              bg-gray-300
-              mt-10
-              rounded-tr-3xl rounded-tl-3xl
-              shadow-lg
-              min-h-screen
-            "
+            class="p-4 bg-gray-300 mt-10 rounded-tr-3xl rounded-tl-3xl shadow-lg min-h-screen"
           >
             <h1 class="flex justify-center font-semibold text-gray-700">
               {{toggle? "Your basket" : "Available lessons"}}
@@ -213,14 +147,7 @@
             <!-- Order complete message -->
             <div
               v-if="orderComplete"
-              class="
-                flex
-                bg-green-100
-                rounded-lg
-                p-4
-                mb-4
-                text-sm text-green-700
-              "
+              class="flex bg-green-100 rounded-lg p-4 mb-4 text-sm text-green-700"
               role="alert"
             >
               <svg
@@ -236,8 +163,10 @@
                 ></path>
               </svg>
               <div>
-                <span class="font-medium">Thank you! <b>{{form.fullname}}</b></span> Your order has been
-                completed.
+                <span class="font-medium"
+                  >Thank you! <b>{{form.fullname}}</b></span
+                >
+                Your order has been completed.
               </div>
             </div>
             <!-- LESSONS CONTAINER -->
@@ -249,23 +178,10 @@
               <div
                 v-for="lesson in searchResults"
                 :key="lesson.id"
-                class="
-                  animate__animated animate__zoomIn
-                  container
-                  mx-auto
-                  p-10
-                  bg-white
-                  max-w-sm
-                  rounded-2xl
-                  overflow-hidden
-                  shadow-xl
-                  hover:shadow-2xl
-                  transition
-                  duration-300
-                "
+                class="animate__animated animate__zoomIn container mx-auto p-10 bg-white max-w-sm rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300"
               >
                 <img class="rounded-xl" :src="lesson.image" alt="" />
-                <div class="flex  items-center">
+                <div class="flex items-center">
                   <div class="flex items-start flex-col">
                     <h1 class="mt-5 text-2xl font-semibold">
                       {{lesson.subject}}
@@ -293,11 +209,7 @@
                     >
                       Add
                       <i
-                        class="
-                          fas
-                          fa-cart-plus
-                          text-gray-200 text-md text-white
-                        "
+                        class="fas fa-cart-plus text-gray-200 text-md text-white"
                       ></i>
                     </button>
                   </div>
@@ -316,18 +228,7 @@
                   </h1>
                   <div
                     v-for="order in cart"
-                    class="
-                      flex
-                      bg-white
-                      rounded-md
-                      items-center
-                      space-x-10
-                      justify-between
-                      border-b-2 border-gray-300
-                      hover:shadow-2xl
-                      p-2
-                      animate__animated animate__zoomIn
-                    "
+                    class="flex bg-white rounded-md items-center space-x-10 justify-between border-b-2 border-gray-300 hover:shadow-2xl p-2 animate__animated animate__zoomIn"
                   >
                     <img :src="order.lesson.image" alt="art" />
                     <div>
@@ -343,12 +244,7 @@
                     >
                     <!-- remove from basket -->
                     <i
-                      class="
-                        fa fa-trash
-                        text-gray-500
-                        hover:text-red-800
-                        cursor-pointer
-                      "
+                      class="fa fa-trash text-gray-500 hover:text-red-800 cursor-pointer"
                       @click="removeFromBasket(order)"
                     ></i>
                   </div>
@@ -391,61 +287,20 @@
                   <!-- loading animation -->
                   <div
                     v-else-if="checkoutClicked"
-                    class="
-                      bg-white
-                      border
-                      py-2
-                      px-5
-                      rounded-lg
-                      flex
-                      items-center
-                      flex-col
-                    "
+                    class="bg-white border py-2 px-5 rounded-lg flex items-center flex-col"
                   >
                     <div class="loader-dots block relative w-20 h-5 mt-2">
                       <div
-                        class="
-                          absolute
-                          top-0
-                          mt-1
-                          w-3
-                          h-3
-                          rounded-full
-                          bg-green-500
-                        "
+                        class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"
                       ></div>
                       <div
-                        class="
-                          absolute
-                          top-0
-                          mt-1
-                          w-3
-                          h-3
-                          rounded-full
-                          bg-green-500
-                        "
+                        class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"
                       ></div>
                       <div
-                        class="
-                          absolute
-                          top-0
-                          mt-1
-                          w-3
-                          h-3
-                          rounded-full
-                          bg-green-500
-                        "
+                        class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"
                       ></div>
                       <div
-                        class="
-                          absolute
-                          top-0
-                          mt-1
-                          w-3
-                          h-3
-                          rounded-full
-                          bg-green-500
-                        "
+                        class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"
                       ></div>
                     </div>
                     <div
