@@ -1,6 +1,8 @@
 new Vue({
   el: "#app",
   data: {
+    loading: false,
+    API_URL: "https://secure-coast-65382.herokuapp.com",
     lessons: null,
     cart: [],
     toggle: false,
@@ -18,22 +20,41 @@ new Vue({
     searchInput: "",
   },
   created() {
-    console.log("created");
     this.fetchLessonsFromDb();
   },
   methods: {
+    searchResults() {
+      fetch(
+        "http://localhost:5000/collection/lessons/search?q=" + this.searchInput
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.lessons = data;
+        });
+    },
+    searchLessons() {
+      fetch(
+        "http://localhost:5000/collection/lessons/search?q=" + this.searchInput
+      )
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    },
     fetchLessonsFromDb() {
-      fetch("http://localhost:3000/collection/lessons")
+      console.log("FETCHING....");
+      fetch(`http://localhost:5000/collection/lessons`)
         .then((response) => response.json())
-        .then((data) => (this.lessons = data));
+        .then((data) => {
+          this.lessons = data;
+          this.loading = false;
+        });
     },
     // adds lesson object to cart
     addToCart(lesson) {
+      this.loading = true;
       // getting index if item exists in cart
       const index = this.cart.findIndex(
         (cartItem) => cartItem.lesson._id === lesson._id
       );
-
       // increment quantity of item if it already exists
       if (index >= 0) {
         this.cart[index].quantity += 1;
@@ -45,11 +66,11 @@ new Vue({
         };
         this.cart.push(cartItem);
       }
-      // decreasing spaces by one
-      // this.lessons.map((lsn) => (lsn._id == lesson._id ? (lsn.space -= 1) : 5));
+      this.updateSpaces(lesson._id, lesson.space, 1);
     },
     // switch between checkout and lessons
     toggleCheckout() {
+      this.fetchLessonsFromDb();
       this.toggle = !this.toggle;
       this.orderComplete = false;
       // reset form fields
@@ -141,15 +162,21 @@ new Vue({
       };
     },
     //checkout btn
-    checkout() {
+    async checkout() {
+      const options = {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      };
       this.checkoutClicked = true;
       this.cart.forEach((order) => {
         const {
           lesson: { _id, space, subject },
           quantity,
         } = order;
-        console.log(space, quantity);
-        fetch("http://localhost:3000/collection/orders", {
+        fetch(`http://localhost:5000/collection/orders`, {
           method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
@@ -161,28 +188,32 @@ new Vue({
             subject,
             phone: this.form.mobile,
             name: this.form.fullname,
+            purchaseDate: new Date().toDateString(),
           }),
         })
           .then((res) => res.json())
           .then((res) => {
+            this.updateSpaces(_id, space, quantity);
             this.checkoutClicked = false;
             this.orderComplete = true;
             this.cart = [];
           });
-
-        fetch(`http://localhost:3000/collection/lessons/${_id}`, {
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ spaces: space - quantity }),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-          });
       });
+    },
+    updateSpaces(lessonId, space, quantity) {
+      const remainingSpace = space - quantity;
+      fetch(`http://localhost:5000/collection/lessons/${lessonId}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ spaces: remainingSpace }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          this.fetchLessonsFromDb();
+        });
     },
     // removes item from basket
     removeFromBasket(order) {
@@ -197,7 +228,18 @@ new Vue({
       const currentLesson = this.lessons.filter(
         (lesson) => lesson._id == order.lesson._id
       );
-      currentLesson[0].space += 1;
+      fetch(`http://localhost:5000/collection/lessons/${order.lesson._id}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ spaces: currentLesson[0].space + 1 }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          this.fetchLessonsFromDb();
+        });
     },
   },
   computed: {
@@ -213,19 +255,5 @@ new Vue({
     },
     //Filters lessons array where search input matches either
     //location or subject
-    searchResults() {
-      if (this.lessons) {
-        return this.lessons.filter((lesson) => {
-          return (
-            lesson.subject
-              .toLowerCase()
-              .includes(this.searchInput.toLowerCase()) ||
-            lesson.location
-              .toLowerCase()
-              .includes(this.searchInput.toLowerCase())
-          );
-        });
-      }
-    },
   },
 });
