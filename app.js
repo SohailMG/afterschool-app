@@ -4,6 +4,7 @@ new Vue({
     loading: false,
     API_URL: "https://secure-coast-65382.herokuapp.com",
     lessons: null,
+    orderId: null,
     cart: [],
     toggle: false,
     sortOption: "",
@@ -18,30 +19,21 @@ new Vue({
     },
     orderComplete: false,
     searchInput: "",
+    currentId: null,
   },
   created() {
     this.fetchLessonsFromDb();
   },
   methods: {
     searchResults() {
-      fetch(
-        "http://localhost:5000/collection/lessons/search?q=" + this.searchInput
-      )
+      fetch(`${this.API_URL}/collection/lessons/search?q=` + this.searchInput)
         .then((res) => res.json())
         .then((data) => {
           this.lessons = data;
         });
     },
-    searchLessons() {
-      fetch(
-        "http://localhost:5000/collection/lessons/search?q=" + this.searchInput
-      )
-        .then((res) => res.json())
-        .then((data) => console.log(data));
-    },
     fetchLessonsFromDb() {
-      console.log("FETCHING....");
-      fetch(`http://localhost:5000/collection/lessons`)
+      fetch(`${this.API_URL}/collection/lessons`)
         .then((response) => response.json())
         .then((data) => {
           this.lessons = data;
@@ -51,6 +43,7 @@ new Vue({
     // adds lesson object to cart
     addToCart(lesson) {
       this.loading = true;
+      this.currentId = lesson._id;
       // getting index if item exists in cart
       const index = this.cart.findIndex(
         (cartItem) => cartItem.lesson._id === lesson._id
@@ -163,20 +156,13 @@ new Vue({
     },
     //checkout btn
     async checkout() {
-      const options = {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-      };
       this.checkoutClicked = true;
       this.cart.forEach((order) => {
         const {
           lesson: { _id, space, subject },
           quantity,
         } = order;
-        fetch(`http://localhost:5000/collection/orders`, {
+        fetch(`${this.API_URL}/collection/orders`, {
           method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
@@ -188,11 +174,13 @@ new Vue({
             subject,
             phone: this.form.mobile,
             name: this.form.fullname,
+            total: this.orderTotal,
             purchaseDate: new Date().toDateString(),
           }),
         })
           .then((res) => res.json())
           .then((res) => {
+            this.orderId = res.orderId;
             this.updateSpaces(_id, space, quantity);
             this.checkoutClicked = false;
             this.orderComplete = true;
@@ -202,7 +190,7 @@ new Vue({
     },
     updateSpaces(lessonId, space, quantity) {
       const remainingSpace = space - quantity;
-      fetch(`http://localhost:5000/collection/lessons/${lessonId}`, {
+      fetch(`${this.API_URL}/collection/lessons/${lessonId}`, {
         method: "PUT",
         headers: {
           Accept: "application/json, text/plain, */*",
@@ -228,7 +216,7 @@ new Vue({
       const currentLesson = this.lessons.filter(
         (lesson) => lesson._id == order.lesson._id
       );
-      fetch(`http://localhost:5000/collection/lessons/${order.lesson._id}`, {
+      fetch(`${this.API_URL}/collection/lessons/${order.lesson._id}`, {
         method: "PUT",
         headers: {
           Accept: "application/json, text/plain, */*",

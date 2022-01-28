@@ -167,7 +167,7 @@
                 <span class="font-medium"
                   >Thank you! <b>{{form.fullname}}</b></span
                 >
-                Your order has been completed.
+                Your order has been completed. Order id: <b>{{orderId}}</b>
               </div>
             </div>
             <!-- LESSONS CONTAINER -->
@@ -221,7 +221,7 @@
                       ></i>
                     </button>
                     <div
-                      v-else
+                      v-if="loading && lesson._id == currentId"
                       style="border-top-color: transparent"
                       class="absolute bottom-0 right-0 m-2 w-10 h-10 border-4 border-green-400 border-solid rounded-full animate-spin"
                     ></div>
