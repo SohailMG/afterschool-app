@@ -25,6 +25,7 @@ new Vue({
     this.fetchLessonsFromDb();
   },
   methods: {
+    // performs a search on user input
     searchResults() {
       fetch(`${this.API_URL}/collection/lessons/search?q=` + this.searchInput)
         .then((res) => res.json())
@@ -32,6 +33,7 @@ new Vue({
           this.lessons = data;
         });
     },
+    // makes GET request to lessons
     fetchLessonsFromDb() {
       fetch(`${this.API_URL}/collection/lessons`)
         .then((response) => response.json())
@@ -155,7 +157,7 @@ new Vue({
       };
     },
     //checkout btn
-    async checkout() {
+    checkout() {
       this.checkoutClicked = true;
       this.cart.forEach((order) => {
         const {
@@ -188,6 +190,7 @@ new Vue({
           });
       });
     },
+    // updates lesson spaces for a given id
     updateSpaces(lessonId, space, quantity) {
       const remainingSpace = space - quantity;
       fetch(`${this.API_URL}/collection/lessons/${lessonId}`, {
@@ -241,7 +244,5 @@ new Vue({
         .map((order) => order.lesson.price * order.quantity)
         .reduce((prev, next) => prev + next);
     },
-    //Filters lessons array where search input matches either
-    //location or subject
   },
 });
