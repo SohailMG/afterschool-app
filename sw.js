@@ -8,12 +8,13 @@ const cacheFiles = [
   "images/site_bg.jpg",
   "images/computerLogo.png",
   "images/geographyLogo.png",
+  "images/icon-192x192.png",
+  "images/icon-512x512.png",
   "images/musicLogo.png",
   "images/spanishLogo.png",
   "images/englishLogo.png",
   "images/historyLogo.png",
   "images/scienceLogo.png",
-  "https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js",
 ];
 
 self.addEventListener("install", (event) => {
