@@ -1,0 +1,22 @@
+{
+  "name": "After school lessons",
+  "short_name": "After School",
+  "description": "An app for after school lessons",
+  "icons": [
+    {
+      "src": "./images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#EEE",
+  "theme_color": "#1565c0",
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}
