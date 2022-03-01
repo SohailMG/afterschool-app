@@ -1,20 +1,20 @@
 const cashName = "afterschool-v1";
 const cacheFiles = [
-  "index.html",
-  "afterschool.webmanifest.json",
-  "images/artLogo.png",
-  "images/frenchLogo.png",
-  "images/mathsLogo.png",
-  "images/site_bg.jpg",
-  "images/computerLogo.png",
-  "images/geographyLogo.png",
-  "images/icon-192x192.png",
-  "images/icon-512x512.png",
-  "images/musicLogo.png",
-  "images/spanishLogo.png",
-  "images/englishLogo.png",
-  "images/historyLogo.png",
-  "images/scienceLogo.png",
+  "./index.html",
+  "./manifest.json",
+  "./images/artLogo.png",
+  "./images/frenchLogo.png",
+  "./images/mathsLogo.png",
+  "./images/site_bg.jpg",
+  "./images/computerLogo.png",
+  "./images/geographyLogo.png",
+  "./images/icon-192x192.png",
+  "./images/icon-512x512.png",
+  "./images/musicLogo.png",
+  "./images/spanishLogo.png",
+  "./images/englishLogo.png",
+  "./images/historyLogo.png",
+  "./images/scienceLogo.png",
 ];
 
 /* caching all files in cache storage  */
@@ -36,8 +36,8 @@ self.addEventListener("fetch", function (e) {
         fetch(e.request).then(async function (response) {
           // add the new file to cache
           const cache = await caches.open(cashName);
-            cache.put(e.request, response.clone());
-            return response;
+          cache.put(e.request, response.clone());
+          return response;
         })
       );
     })
