@@ -1,7 +1,9 @@
-
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("./sw.js")
+    .register("./sw.js", {
+      enabled: environment.production,
+      registrationStrategy: "registerImmediately",
+    })
     .then((reg) => {
       console.log("Registration successful", reg);
     })
