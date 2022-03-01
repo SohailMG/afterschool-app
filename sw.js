@@ -17,6 +17,7 @@ const cacheFiles = [
   "images/scienceLogo.png",
 ];
 
+/* caching all files in cache storage  */
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(cashName).then((cache) => {

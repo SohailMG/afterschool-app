@@ -1,6 +1,13 @@
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("sw.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch(() => console.log("service Worker not registered "));
+    .register("./sw.js")
+    .then((reg) => {
+      console.log("Registration successful", reg);
+    })
+    .catch((e) =>
+      console.error("Error during service worker registration:", e)
+    );
+} else {
+  console.warn("Service Worker is not supported");
 }
