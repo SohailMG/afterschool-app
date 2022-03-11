@@ -1,5 +1,5 @@
-const cashName = "afterschool-v1";
-const cacheFiles = [
+const CACHE_NAME = "afterschool-v1";
+const CACHE_URLS = [
   "./index.html",
   "./manifest.json",
   "./images/artLogo.png",
@@ -17,29 +17,30 @@ const cacheFiles = [
   "./images/scienceLogo.png",
 ];
 
-/* caching all files in cache storage  */
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(cashName).then((cache) => {
-      console.log("[SW] -> cashing all files");
-      return cache.addAll(cacheFiles);
-    })
-  );
-});
-
+// Respond with cached resources
 self.addEventListener("fetch", function (e) {
+  console.log("fetch request to => " + e.request.url);
   e.respondWith(
     caches.match(e.request).then(function (r) {
-      // Download the file if it is not in the cache,
       return (
         r ||
         fetch(e.request).then(async function (response) {
           // add the new file to cache
-          const cache = await caches.open(cashName);
+          const cache = await caches.open(CACHE_NAME);
           cache.put(e.request, response.clone());
           return response;
         })
       );
+    })
+  );
+});
+
+// Cache resources
+self.addEventListener("install", function (e) {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      console.log("Installing cache => " + CACHE_NAME);
+      return cache.addAll(CACHE_URLS);
     })
   );
 });
