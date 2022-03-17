@@ -1,24 +1,7 @@
-# school-app
+# After School App with Vue
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Links
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [@Github Repository](https://github.com/SohailMG/afterschool-app)
+- [@Live Site](http://sohailgsais.me/afterschool-app/)
